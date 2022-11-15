@@ -32,7 +32,12 @@
         <wheelTorque>50</wheelTorque>
         <wheelAcceleration>1</wheelAcceleration>
         <publishTf>${publish_tf}</publishTf>
-        <publishWheelTF>${publish_tf}</publishWheelTF>
+        <xacro:if value="${publish_jointstate=='true'}">
+          <publishWheelTF>false</publishWheelTF>
+        </xacro:if>
+        <xacro:if value="${publish_jointstate=='false'}">
+          <publishWheelTF>true</publishWheelTF>
+        </xacro:if>
         <publishOdomTF>${publish_tf}</publishOdomTF>
         <publishWheelJointState>${publish_jointstate}</publishWheelJointState>
       </plugin>
