@@ -8,6 +8,7 @@
   <xacro:arg name="gazebo_plugin"         default="true"/>
   <xacro:arg name="camera_gazebo_plugin"  default="true"/>
   <xacro:arg name="imu_gazebo_plugin"     default="true"/>
+  <xacro:arg name="gnss_gazebo_plugin"    default="true"/>
 
   <xacro:arg name="diffdrive_pub_tf"      default="true"/>
   <xacro:arg name="jointstate"            default="true"/>
@@ -33,6 +34,7 @@
   <xacro:include filename="$(find raspicat_description)/urdf/sensors/ultrasonicsens.urdf.xacro"/>
   <xacro:include filename="$(find raspicat_description)/urdf/sensors/realsense_d435.urdf.xacro"/>
   <xacro:include filename="$(find raspicat_description)/urdf/sensors/imu.urdf.xacro"/>
+  <xacro:include filename="$(find raspicat_description)/urdf/sensors/gnss.urdf.xacro"/>
 
   <!-- =============== Link & Joint =============== -->
   <link name="base_footprint"/>
@@ -99,6 +101,11 @@
     <origin xyz="0 0 0.14" rpy="${M_PI} 0 0"/>
   </xacro:imu_sensor>
 
+  <!-- Gnss -->
+  <xacro:gnss_sensor prefix="gnss" parent="base_link">
+    <origin xyz="0 0 0.14" rpy="0 0 0"/>
+  </xacro:gnss_sensor>
+
   <!-- =============== Gazebo =============== -->
   <xacro:if value="$(arg gazebo_plugin)">
     <!-- Base_body -->
@@ -144,6 +151,16 @@
     <xacro:if value="$(arg imu_gazebo_plugin)">
       <xacro:imu_sensor_gazebo
         prefix="imu" parent="base_link"/>
+    </xacro:if>
+
+    <!-- Gnss -->
+    <xacro:if value="$(arg gnss_gazebo_plugin)">
+      <spherical_coordinates>
+        <heading_deg>180</heading_deg>
+      </spherical_coordinates>
+
+      <xacro:gnss_sensor_gazebo
+        prefix="gnss" parent="base_link"/>
     </xacro:if>
   </xacro:if>
 </robot>
