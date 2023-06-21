@@ -20,6 +20,7 @@
 
   <xacro:arg name="lidar_frame"           default="lidar_link"/>
 
+
   <!-- =============== Xacro property =============== -->
   <xacro:property name="lidar_mount_z" value="0.0"/>
   <xacro:property name="lidar_sensor_z" value="0.055"/>
@@ -72,6 +73,17 @@
   <xacro:lidar_sensor prefix="laser" parent="lidar_mount_link" lidar_frame="$(arg lidar_frame)">
     <origin xyz="0 0 ${lidar_sensor_z}" rpy="0 0 0"/>
   </xacro:lidar_sensor>
+
+    <!-- Add/LiDAR2 -->
+  <xacro:lidar_mount prefix="lidar2_mount" parent="base_link">
+    <origin xyz="-0.2425 0 0.706" rpy="0 0.29655556 0"/>
+      <!-- 地面から取付台: 0.665m,取付台からマウント（真ん中）: 0.041m,マウントの取り付け角度: 17度 -->
+  </xacro:lidar_mount>
+
+  <xacro:lidar2_sensor prefix="laser2" parent="lidar2_mount_link" lidar_frame="lidar2_link">
+    <origin xyz="0 0 ${lidar_sensor_z}" rpy="0 0 0"/>
+  </xacro:lidar2_sensor>
+  <!--  -->
 
   <xacro:ultrasonic_sensor prefix="right_side" parent="base_link">
     <origin xyz="0.1055 -0.1165 -0.00795" rpy="0 0 -0.837758"/>
