@@ -76,7 +76,7 @@
 
     <!-- Add/LiDAR2 -->
   <xacro:lidar_mount prefix="lidar2_mount" parent="base_link">
-    <origin xyz="-0.155 0 0.706" rpy="0 0.29655556 0"/>
+    <origin xyz="-0.240 0 0.706" rpy="0 0.29655556 0"/>
       <!-- 地面から取付台: 0.665m,取付台からマウント（真ん中）: 0.041m,マウントの取り付け角度: 17度 -->
   </xacro:lidar_mount>
 
