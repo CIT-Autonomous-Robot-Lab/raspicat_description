@@ -22,7 +22,7 @@
 
 
   <!-- =============== Xacro property =============== -->
-  <xacro:property name="lidar_mount_z" value="0.0"/>
+  <xacro:property name="lidar_mount_z" value="0.23"/>
   <xacro:property name="lidar_sensor_z" value="0.055"/>
 
   <!-- =============== Xacro include =============== -->
@@ -67,7 +67,7 @@
 
   <!-- Sensors -->
   <xacro:lidar_mount prefix="lidar_mount" parent="base_link">
-    <origin xyz="0.144 0 ${lidar_mount_z - 0.0262}" rpy="0 0 0"/>
+    <origin xyz="0.06 0 ${lidar_mount_z - 0.0262}" rpy="0 0 0"/>
   </xacro:lidar_mount>
 
   <xacro:lidar_sensor prefix="laser" parent="lidar_mount_link" lidar_frame="$(arg lidar_frame)">
