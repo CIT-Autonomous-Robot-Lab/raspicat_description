@@ -8,21 +8,22 @@
   <xacro:arg name="gazebo_plugin"         default="true"/>
   <xacro:arg name="camera_gazebo_plugin"  default="true"/>
   <xacro:arg name="imu_gazebo_plugin"     default="true"/>
+  <xacro:arg name="gnss_gazebo_plugin"    default="true"/>
 
   <xacro:arg name="diffdrive_pub_tf"      default="true"/>
   <xacro:arg name="jointstate"            default="true"/>
 
   <xacro:arg name="laser_visual"          default="false"/>
-  <xacro:arg name="ultrasonic_visual"     default="true"/>
+  <xacro:arg name="ultrasonic_visual"     default="false"/>
 
   <xacro:arg name="robot_namespace"       default=""/>
   <xacro:arg name="diffdrive_namespace"   default="/"/>
 
   <xacro:arg name="lidar_frame"           default="lidar_link"/>
 
-  <!-- =============== Xacro property =============== -->
+  <!-- =============== Xacro property =============== 
   <xacro:property name="lidar_mount_z" value="0.0"/>
-  <xacro:property name="lidar_sensor_z" value="0.055"/>
+  <xacro:property name="lidar_sensor_z" value="0.055"/> -->
 
   <!-- =============== Xacro include =============== -->
   <xacro:include filename="$(find raspicat_description)/urdf/common.xacro"/>
@@ -30,9 +31,10 @@
   <xacro:include filename="$(find raspicat_description)/urdf/wheel/wheel.urdf.xacro"/>
   <xacro:include filename="$(find raspicat_description)/urdf/caster/caster.urdf.xacro"/>
   <xacro:include filename="$(find raspicat_description)/urdf/sensors/lidar.urdf.xacro"/>
-  <xacro:include filename="$(find raspicat_description)/urdf/sensors/ultrasonicsens.urdf.xacro"/>
-  <xacro:include filename="$(find raspicat_description)/urdf/sensors/realsense_d435.urdf.xacro"/>
+  <!--<xacro:include filename="$(find raspicat_description)/urdf/sensors/ultrasonicsens.urdf.xacro"/>
+  <xacro:include filename="$(find raspicat_description)/urdf/sensors/realsense_d435.urdf.xacro"/> -->
   <xacro:include filename="$(find raspicat_description)/urdf/sensors/imu.urdf.xacro"/>
+  <xacro:include filename="$(find raspicat_description)/urdf/sensors/gnss.urdf.xacro"/>
 
   <!-- =============== Link & Joint =============== -->
   <link name="base_footprint"/>
@@ -43,19 +45,19 @@
   </xacro:base_body>
 
   <!-- Wheel -->
-  <xacro:wheel prefix="right" parent="base_link">
-    <origin xyz="0 -0.13959 0" rpy="-1.57 0 0"/>
+  <xacro:wheel prefix="right" parent="base_footprint">
+    <origin xyz="0 -0.175 0.1" rpy="-1.57 0 0"/>
     <axis xyz="0 0 1"/>
   </xacro:wheel>
 
-  <xacro:wheel prefix="left" parent="base_link">
-    <origin xyz="0 0.13959 0" rpy="1.57 0 0"/>
+  <xacro:wheel prefix="left" parent="base_footprint">
+    <origin xyz="0 0.175 0.1" rpy="1.57 0 0"/>
     <axis xyz="0 0 -1"/>
   </xacro:wheel>
 
   <!-- Caster -->
-  <xacro:caster parent="base_link">
-    <origin xyz="-0.2425 0 0.0567" rpy="0 0 0"/>
+  <xacro:caster parent="base_footprint">
+    <origin xyz="-0.355 0 0.135" rpy="0 0 0"/>
     <axis xyz="0 0 1"/>
   </xacro:caster>
 
@@ -65,14 +67,15 @@
   </xacro:caster_wheel>
 
   <!-- Sensors -->
-  <xacro:lidar_mount prefix="lidar_mount" parent="base_link">
-    <origin xyz="0.144 0 ${lidar_mount_z - 0.0262}" rpy="0 0 0"/>
+  <xacro:lidar_mount prefix="lidar_mount" parent="base_footprint">
+    <origin xyz="-0.355 0 0.335" rpy="0 0 0"/>
   </xacro:lidar_mount>
 
   <xacro:lidar_sensor prefix="laser" parent="lidar_mount_link" lidar_frame="$(arg lidar_frame)">
-    <origin xyz="0 0 ${lidar_sensor_z}" rpy="0 0 0"/>
+    <origin xyz="0 0 0.045" rpy="0 0.1222 0"/>
   </xacro:lidar_sensor>
 
+  <!-- ultrasonic_sensor
   <xacro:ultrasonic_sensor prefix="right_side" parent="base_link">
     <origin xyz="0.1055 -0.1165 -0.00795" rpy="0 0 -0.837758"/>
   </xacro:ultrasonic_sensor>
@@ -87,17 +90,22 @@
 
   <xacro:ultrasonic_sensor prefix="left_side" parent="base_link">
     <origin xyz="0.1055 0.1165 -0.00795" rpy="0 0 0.837758"/>
-  </xacro:ultrasonic_sensor>
+  </xacro:ultrasonic_sensor> -->
 
-  <!-- Camera -->
+  <!-- Camera 
   <xacro:realsensed435_sensor prefix="camera" parent="base_link">
     <origin xyz="0.0982 0 0.1188" rpy="${M_PI/2} 0 ${M_PI/2}"/>
-  </xacro:realsensed435_sensor>
+  </xacro:realsensed435_sensor> -->
 
   <!-- Imu -->
-  <xacro:imu_sensor prefix="imu" parent="base_link">
-    <origin xyz="0 0 0.14" rpy="${M_PI} 0 0"/>
+  <xacro:imu_sensor prefix="imu" parent="base_footprint">
+    <origin xyz="-0.355 0 0.38" rpy="0 0.1222 0"/>
   </xacro:imu_sensor>
+
+  <!-- Gnss -->
+  <xacro:gnss_sensor prefix="gnss" parent="base_footprint">
+    <origin xyz="-0.22 0 0.3" rpy="0 0 0"/>
+  </xacro:gnss_sensor>
 
   <!-- =============== Gazebo =============== -->
   <xacro:if value="$(arg gazebo_plugin)">
@@ -119,6 +127,7 @@
     <xacro:lidar_gazebo lidar_frame="$(arg lidar_frame)"
       min_angle="-1.9" max_angle="1.9" min_range="0.1" max_range="30" visualize="$(arg laser_visual)"/>
 
+    <!--  
     <xacro:ultrasonic_sensor_gazebo prefix="right_side"
       min_angle="-0.0574533" max_angle="0.0574533" min_range="0.02" max_range="4.095" visualize="$(arg ultrasonic_visual)"/>
 
@@ -129,21 +138,31 @@
       min_angle="-0.0574533" max_angle="0.0574533" min_range="0.02" max_range="4.095" visualize="$(arg ultrasonic_visual)"/>
 
     <xacro:ultrasonic_sensor_gazebo prefix="left_side"
-      min_angle="-0.0574533" max_angle="0.0574533" min_range="0.02" max_range="4.095" visualize="$(arg ultrasonic_visual)"/>
+      min_angle="-0.0574533" max_angle="0.0574533" min_range="0.02" max_range="4.095" visualize="$(arg ultrasonic_visual)"/> -->
 
-    <!-- Camera -->
+    <!-- Camera 
     <xacro:if value="$(arg camera_gazebo_plugin)">
       <xacro:realsensed435_color_gazebo
         color_fps="15" color_width="1920" color_height="1080" pointCloud_z_min="0.2" pointCloud_z_max="5"/>
 
       <xacro:realsensed435_depth_gazebo
         depth_fps="15" depth_width="1280" depth_height="720" pointCloud_z_min="0.2" pointCloud_z_max="5"/>
-    </xacro:if>
+    </xacro:if> -->
 
     <!-- Imu -->
     <xacro:if value="$(arg imu_gazebo_plugin)">
       <xacro:imu_sensor_gazebo
-        prefix="imu" parent="base_link"/>
+        prefix="imu" parent="base_footprint"/>
+    </xacro:if>
+
+    <!-- Gnss -->
+    <xacro:if value="$(arg gnss_gazebo_plugin)">
+      <spherical_coordinates>
+        <heading_deg>180</heading_deg>
+      </spherical_coordinates>
+
+      <xacro:gnss_sensor_gazebo
+        prefix="gnss" parent="base_footprint"/>
     </xacro:if>
   </xacro:if>
 </robot>

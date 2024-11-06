@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <robot name="common" xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- Base body property -->
-  <xacro:property name="base_body_mass" value="5.778318"/>
+  <xacro:property name="base_body_mass" value="8.0"/>
 
   <!-- Wheel property -->
-  <xacro:property name="wheel_radius"       value="0.0762"/>
-  <xacro:property name="wheel_length"       value="0.0254"/>
-  <xacro:property name="wheel_mass"         value="0.255393"/>
-  <xacro:property name="wheel_separation"   value="0.27918"/>
+  <xacro:property name="wheel_radius"       value="0.1"/>
+  <xacro:property name="wheel_length"       value="0.025"/>
+  <xacro:property name="wheel_mass"         value="0.25"/>
+  <xacro:property name="wheel_separation"   value="0.35"/>
 
   <!-- Caster property -->
   <xacro:property name="caster_radius"      value="0.05"/>
