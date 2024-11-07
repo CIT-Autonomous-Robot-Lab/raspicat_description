@@ -16,7 +16,7 @@
     <gazebo>
       <plugin name='differential_drive_controller' filename='libgazebo_ros_diff_drive.so'>
         <ros>
-          <remapping>cmd_vel:=sim_cmd_vel</remapping>
+          <remapping>cmd_vel:=cmd_vel</remapping>
           <remapping>odom:=odom</remapping>
         </ros>
 
