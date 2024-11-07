@@ -13,7 +13,7 @@
   <xacro:arg name="diffdrive_pub_tf"      default="true"/>
   <xacro:arg name="jointstate"            default="true"/>
 
-  <xacro:arg name="laser_visual"          default="false"/>
+  <xacro:arg name="laser_visual"          default="true"/>
   <xacro:arg name="ultrasonic_visual"     default="false"/>
 
   <xacro:arg name="robot_namespace"       default=""/>
